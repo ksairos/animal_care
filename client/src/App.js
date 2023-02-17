@@ -87,7 +87,7 @@ class App extends Component {
         </div>
         <div className="content">
           <Form>
-            <Form.Row>
+            <Row>
               <Form.Group as={Col}>
                 <Form.Label>Sepal Length</Form.Label>
                 <Form.Control 
@@ -108,8 +108,8 @@ class App extends Component {
                   {sepalWidths}
                 </Form.Control>
               </Form.Group>
-            </Form.Row>
-            <Form.Row>
+            </Row>
+            <Row>
               <Form.Group as={Col}>
                 <Form.Label>Petal Length</Form.Label>
                 <Form.Control 
@@ -130,7 +130,7 @@ class App extends Component {
                   {petalWidths}
                 </Form.Control>
               </Form.Group>
-            </Form.Row>
+            </Row>
             <Row>
               <Col>
                 <Button
