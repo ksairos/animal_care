@@ -1,0 +1,19 @@
+.container {
+    height: auto;
+    margin-top: 24px;
+    padding: 24px 24px 12px 24px;
+    background-color: #dddddd;
+}
+
+.title {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 3em;
+    letter-spacing: 0.15rem;
+    margin-bottom: 24px;
+}
+
+.col {
+    margin-bottom: 24px;
+}
