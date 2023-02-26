@@ -7,7 +7,7 @@ import '../styles/Results.css'
 const Results = (props) => {
     return ( 
     <div className='results'>
-    { props.results.state === "404" ? null :
+    { props.results.state === "500" ? null :
             (<Row>
                 <Col className="result-container">
                     <h5>{props.results.prediction}</h5>

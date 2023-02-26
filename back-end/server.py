@@ -25,7 +25,7 @@ def index():
     '''
     return html
 
-@app.route('/prediction', methods=["POST", "GET"])
+@app.route('/prediction', methods=["POST"])
 def prediction():
     # save incoming images and load images
     if request.method == 'POST':
@@ -33,17 +33,16 @@ def prediction():
         save_image(file)
         train_img = image_folder + file.filename
         # make prediction using YOLOv5 model
-        res = model(train_img)
-        print("Model's Prediction: ", res)
-        if str(res).split(" ")[4].split("\n")[0] == "good" or str(res).split(" ")[4].split("\n")[0] == "goods":
-            result = "Good"
+        result = model(train_img)
+        print("Model's Prediction: ", result)
+        if str(result).split(" ")[4].split("\n")[0] == "good" or str(result).split(" ")[4].split("\n")[0] == "goods":
+            pred = "Good"
         else:
-            result = "Bad"
-        print(result)
+            pred = "Bad"
+        print(pred)
         return {
-            "statusCode": 500,
-            "status" : "Prediction Made",
-            "result" : result
+            "state": 200,
+            "prediction" : pred
         }
     
     # if request.method == 'GET':

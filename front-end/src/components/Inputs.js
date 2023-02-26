@@ -26,10 +26,10 @@ const Inputs = (props) => {
             my_image.selectedFile,
             my_image.selectedFile.name
         )
-        console.log(my_image.selectedFile)
         axios.post(props.server_url + "/prediction", formData)
             .then((res) => {
-                console.log(res)
+                console.log(res.data)
+                props.setResults(res.data)
             });
     }
 
@@ -112,16 +112,11 @@ const Inputs = (props) => {
                         </Col>
                     </Row>
                 </Form>
-                {/* {result === "" ? null :
-            (<Row>
-              <Col className="result-container">
-                <h5 id="result">{result}</h5>
-              </Col>
-            </Row>)
-          } */}
+                
+                <Results results={props.prediction} />
             </div>
 
-            <Results results={props.prediction} />
+            
 
         </Container>
     );
