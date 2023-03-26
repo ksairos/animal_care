@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:animal_care_flutter_app/screens/HomePage.dart';
 import 'package:animal_care_flutter_app/screens/PetRegisterPage.dart';
 import 'package:animal_care_flutter_app/screens/SignupPage.dart';
+import 'package:animal_care_flutter_app/utils/AppConfig.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,12 +13,12 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
   static String id = "/login";
 
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final String url = "http://127.0.0.1:3001";
 
   String _username = "";
   String _password = "";
@@ -25,13 +26,39 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String? _errorMessage;
 
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final SecureStorage _secureStorage = SecureStorage();
+
+  Future<int> _petGetListCount() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    final getPetListCountUrl = Uri.parse('${Server.serverUrl}/pet/getlist/countpets');
+    final response = await http.post(
+      getPetListCountUrl,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'uid': _username,
+      }),
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    return jsonDecode(response.body)[0];
+  }
+
+
   void _handleLogin() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    final loginUrl = Uri.parse('$url/user/signin');
+    final loginUrl = Uri.parse('${Server.serverUrl}/user/signin');
     final response = await http.post(
       loginUrl,
       headers: {'Content-Type': 'application/json'},
@@ -45,7 +72,17 @@ class _LoginPageState extends State<LoginPage> {
     switch (responseJson["code"]){
       case 0:
         print(responseJson["msg"]);
-        if (context.mounted) context.go(HomePage.id);
+        await _secureStorage.setUserName(_username); // Add UserID into Secure Storage
+        final count = await _petGetListCount(); // Get the number of pets for entered user
+        print(count);
+        if (context.mounted) {
+          if (count == 0){
+            context.push(PetRegisterPage.id); // Move to Pet Registration
+          }
+          else{
+            context.push(HomePage.id);} //TODO: Switch to GO
+          // Move to Home Page
+        }
         break;
       case 3:
         print(responseJson["msg"]);
@@ -60,8 +97,8 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = false;
     });
-
   }
+
 
   //:TODO: Implement keyboard behaviour.
   @override
@@ -84,118 +121,121 @@ class _LoginPageState extends State<LoginPage> {
                 margin: EdgeInsets.all(24),
                 color: Colors.white,
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Image(
-                              image: AssetImage('assets/img/logo.png'),
-                              height: 200,
-                              width: 200,
-                            ),
-                            const Text("건강한 견생의 일상"),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text("푸푸케어",
-                                    style: TextStyle(color: Colors.greenAccent)),
-                                Text("에서 함께 해주세요")
-                              ],
-                            )
-                          ],
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Image(
+                                image: AssetImage('assets/img/logo.png'),
+                                height: 200,
+                                width: 200,
+                              ),
+                              const Text("건강한 견생의 일상"),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text("푸푸케어",
+                                      style: TextStyle(color: Colors.greenAccent)),
+                                  Text("에서 함께 해주세요")
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: [
-                            Padding(
-                              //TODO: Change to Global Styles
-                              padding: EdgeInsets.symmetric(vertical: 4),
-                              child: TextField(
-                                onChanged: (value) {
-                                  setState(() {
-                                    _username = value;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Enter Username',
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              //TODO: Change to Global Styles
-                              padding: EdgeInsets.symmetric(vertical: 4),
-                              child: TextField(
-                                // textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Enter Password',
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _password = value;
-                                  });
-                                },
-                              ),
-                            ),
-
-                            Container(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  print(_username);
-                                  print(_password);
-                                  _handleLogin();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                ),
-                                child: const Text(
-                                  "Login",
-                                  style: TextStyle(
-                                    color: Colors.black54,
-                                    fontFamily: 'Rubik',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.0,
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              Padding(
+                                //TODO: Change to Global Styles
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: TextField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _username = value;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Enter Username',
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Text.rich(TextSpan(children: [
-                                TextSpan(
-                                    text: "Forgot Login / ",
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        context.push(PetRegisterPage.id);
-                                      } //TODO: Add route to a Forgot Login
+                              Padding(
+                                //TODO: Change to Global Styles
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: TextField(
+                                  // textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Enter Password',
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _password = value;
+                                    });
+                                  },
                                 ),
-                                TextSpan(
-                                    text: "Forgot Password / ",
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        context.push(PetRegisterPage.id);
-                                      } //TODO: Add route to Login Page
+                              ),
+
+                              Container(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    print(_username);
+                                    print(_password);
+                                    _handleLogin();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                  ),
+                                  child: const Text(
+                                    "Login",
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontFamily: 'Rubik',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
                                 ),
-                                TextSpan(
-                                    text: "Sign Up",
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        context.push(SignupPage.id);
-                                      }
-                                ),
-                              ])),
-                            ),
-                          ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 4),
+                                child: Text.rich(TextSpan(children: [
+                                  TextSpan(
+                                      text: "Forgot Login / ",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          context.push(PetRegisterPage.id);
+                                        } //TODO: Add route to a Forgot Login
+                                  ),
+                                  TextSpan(
+                                      text: "Forgot Password / ",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          context.push(PetRegisterPage.id);
+                                        } //TODO: Add route to Login Page
+                                  ),
+                                  TextSpan(
+                                      text: "Sign Up",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          context.push(SignupPage.id);
+                                        }
+                                  ),
+                                ])),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 )),
               ),

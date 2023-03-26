@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:animal_care_flutter_app/utils/AppConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class PetRegisterPage extends StatefulWidget {
   const PetRegisterPage({Key? key}) : super(key: key);
@@ -13,9 +17,10 @@ class _PetRegisterPageState extends State<PetRegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   String? _gender;
-  TextEditingController _birthdayController = TextEditingController();
-  TextEditingController _adoptionDateController = TextEditingController();
-  TextEditingController _weightController = TextEditingController();
+  final _birthdayController = TextEditingController();
+  final _adoptionDateController = TextEditingController();
+  final _weightController = TextEditingController();
+  final _secureStorage = SecureStorage();
 
   // Function to select date from 1900 until today
   Future<void> _selectDate(
@@ -36,7 +41,23 @@ class _PetRegisterPageState extends State<PetRegisterPage> {
 
   // Post entered data to the server
   Future<void> _sendDataToApi() async {
-    final url = '';
+    final petRegisterUrl = Uri.parse("${Server.serverUrl}/pet/register");
+    final response = await http.post(
+      petRegisterUrl,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'petName':_nameController.text,
+        'petSex': _gender,
+        'petBirthYear': _birthdayController.text.substring(0,4),
+        'petBirthMonth': _birthdayController.text.substring(5),
+        'petAdoptYear': _adoptionDateController.text.substring(0,4),
+        'petAdoptMonth':_adoptionDateController.text.substring(5),
+        'petWeight': _weightController.text,
+        'uid': await _secureStorage.getUserName() ?? '',
+      })
+    );
+
+    // print(response.body);
   }
 
   @override
@@ -155,7 +176,7 @@ class _PetRegisterPageState extends State<PetRegisterPage> {
                     Container(
                       width: 200,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => _sendDataToApi(),
                         style:
                             ElevatedButton.styleFrom(backgroundColor: Colors.green),
                         child: const Text(
