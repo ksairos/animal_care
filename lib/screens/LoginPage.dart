@@ -19,8 +19,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
       getPetListCountUrl,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'uid': _usernameController,
+        'uid': _usernameController.text,
       }),
     );
 
@@ -71,8 +71,8 @@ class _LoginPageState extends State<LoginPage> {
     switch (responseJson["code"]) {
       case 0:
         print(responseJson["msg"]);
-        await _secureStorage
-            .setUserName(_usernameController.text); // Add UserID into Secure Storage
+        await _secureStorage.setUserName(
+            _usernameController.text); // Add UserID into Secure Storage
         final count =
             await _petGetListCount(); // Get the number of pets for entered user
         print(count);
@@ -151,29 +151,33 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         ),
-                        //? Login Form
                         Expanded(
                           flex: 1,
                           child: Column(
                             children: [
+                              //? Login Form
                               TextFormField(
-                                controller: _usernameController,
                                 onChanged: (value) {
                                   setState(() {
                                     _usernameController.text = value;
                                   });
                                 },
+                                autocorrect: false,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintText: 'Enter Username',
                                 ),
                               ),
 
-                              SizedBox(height: 15,),
+                              SizedBox(
+                                height: 15,
+                              ),
 
                               TextFormField(
-                                controller: _passwordController,
                                 // textAlign: TextAlign.center,
+                                autocorrect: false,
+                                obscureText: true,
+                                enableSuggestions: false,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintText: 'Enter Password',
@@ -185,7 +189,9 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                               ),
 
-                              SizedBox(height: 15,),
+                              SizedBox(
+                                height: 15,
+                              ),
 
                               //? Login Button
                               Container(
@@ -237,7 +243,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
 
-                              SizedBox(height: 15,),
+                              SizedBox(
+                                height: 15,
+                              ),
 
                               Text.rich(TextSpan(children: [
                                 TextSpan(

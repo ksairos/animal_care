@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:animal_care_flutter_app/screens/LoginPage.dart';
+import 'package:animal_care_flutter_app/screens/PetRegisterPage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -20,10 +21,10 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
 
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -56,8 +57,8 @@ class _SignupPageState extends State<SignupPage> {
       case 0:
         print(responseJson["msg"]);
         if (context.mounted) {
-          context.push(HomePage.id);
-        } //TODO: Switch to GO
+          context.push(PetRegisterPage.id);
+        }
         break;
       case 5:
         print(responseJson["msg"]);
