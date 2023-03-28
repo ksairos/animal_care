@@ -8,6 +8,7 @@ import 'package:progress_state_button/progress_button.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/AppConfig.dart';
+import 'HomePage.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -50,6 +51,27 @@ class _SignupPageState extends State<SignupPage> {
       }),
     );
     final responseJson = jsonDecode(response.body);
+
+    switch (responseJson["code"]) {
+      case 0:
+        print(responseJson["msg"]);
+        if (context.mounted) {
+          context.push(HomePage.id);
+        } //TODO: Switch to GO
+        break;
+      case 5:
+        print(responseJson["msg"]);
+        //TODO: Handle existing Username
+        break;
+      case 6:
+        print(responseJson["msg"]);
+        //TODO: Handle Database Problem
+        break;
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
 
@@ -100,6 +122,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
 
+                    //TODO: Add validators to TextFormFields
                     Expanded(
                       flex: 3,
                       child: Column(
@@ -122,7 +145,7 @@ class _SignupPageState extends State<SignupPage> {
 
                           SizedBox(height: 15,),
 
-                          TextField(
+                          TextFormField(
                             onChanged: (value) {
                               setState(() {
                                 _usernameController.text = value;
@@ -138,7 +161,7 @@ class _SignupPageState extends State<SignupPage> {
 
                           SizedBox(height: 15,),
 
-                          TextField(
+                          TextFormField(
                             onChanged: (value) {
                               setState(() {
                                 _nameController.text = value;
@@ -154,7 +177,7 @@ class _SignupPageState extends State<SignupPage> {
 
                           SizedBox(height: 15,),
 
-                          TextField(
+                          TextFormField(
                             // textAlign: TextAlign.center,
                             onChanged: (value) {
                               setState(() {
@@ -173,7 +196,7 @@ class _SignupPageState extends State<SignupPage> {
                           SizedBox(height: 15,),
 
 
-                          TextField(
+                          TextFormField(
                             // textAlign: TextAlign.center,
                             autocorrect: false,
                             obscureText: true,

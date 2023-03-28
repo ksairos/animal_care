@@ -127,6 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //? Logo and Welcome text
+                        //TODO: Add TextFormFields validators
                         Expanded(
                           flex: 1,
                           child: Column(
