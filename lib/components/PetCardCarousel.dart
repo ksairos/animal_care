@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:animal_care_flutter_app/utils/AppConfig.dart';
 
 class PetCardCarousel extends StatefulWidget {
   const PetCardCarousel({super.key});
-
 
   @override
   _PetCardCarouselState createState() => _PetCardCarouselState();
@@ -39,6 +39,10 @@ class _PetCardCarouselState extends State<PetCardCarousel> {
     }
   }
 
+  void handleCardClick(String petId) {
+    context.pushNamed('petPage', params: {'petId' : petId});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -61,22 +65,27 @@ class _PetCardCarouselState extends State<PetCardCarousel> {
   }
 
   Widget _buildCard(dynamic item) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: SizedBox(
-        width: 200,
-        height: 270,
-        child: Column(
-          children: [
-            //TODO: Parse image from a bytecode format
-            // item[8] ??
-            Image(image: AssetImage("assets/img/no_image.png"), width: 200, height: 200, fit: BoxFit.cover,),
-            Text(item[1]),
-            Text(item[2]) //TODO: Change to dog breed
-          ],
+    return InkWell(
+      onTap: () {
+        handleCardClick(item[0].toString());
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: SizedBox(
+          width: 200,
+          height: 270,
+          child: Column(
+            children: [
+              //TODO: Parse image from a bytecode format
+              // item[8] ??
+              Image(image: AssetImage("assets/img/no_image.png"), width: 200, height: 200, fit: BoxFit.cover,),
+              Text(item[1]),
+              Text(item[2]) //TODO: Change to dog breed
+            ],
+          ),
         ),
       ),
     );
