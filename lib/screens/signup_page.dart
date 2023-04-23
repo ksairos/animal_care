@@ -9,7 +9,6 @@ import 'package:progress_state_button/progress_button.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/AppConfig.dart';
-import 'home_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);

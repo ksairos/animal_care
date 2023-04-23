@@ -40,11 +40,10 @@ final GoRouter myRouter = GoRouter(
       },
     ),
     //TODO: change to dynamic link (e.g. 'username/petId/')
-    GoRoute(
-      path: '/petPage/:petId',
-      name: 'petPage',
-      builder: (BuildContext context, state) =>
-          PetPage(petId: state.params['petId'])
-    )
+    // GoRoute(
+    //   path: '/petPage',
+    //   name: 'petPage',
+    //   builder: (BuildContext context, state) => PetPage()
+    // )
   ],
 );
