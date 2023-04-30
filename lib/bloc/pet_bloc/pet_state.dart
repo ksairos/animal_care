@@ -4,11 +4,11 @@ class PetState {
   final Pet? selectedPet;
   final bool isLoading;
 
-  PetState({this.selectedPet, this.isLoading = true});
+  PetState({this.selectedPet, this.isLoading = false});
 
   PetState copyWith({
     Pet? selectedPet,
-    bool isLoading = true,
+    bool isLoading = false,
   })
   {
     return PetState(

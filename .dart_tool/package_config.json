@@ -32,10 +32,22 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "charcode",
+      "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/charcode-1.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "clock",
       "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/clock-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "cloudinary",
+      "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/cloudinary-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "collection",
@@ -50,10 +62,28 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "crypto",
+      "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/crypto-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "csslib",
+      "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/csslib-0.17.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "dio",
+      "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/dio-5.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
     },
     {
       "name": "fake_async",
@@ -138,6 +168,12 @@
       "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/go_router-6.5.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "html",
+      "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/html-0.15.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "http",
@@ -314,6 +350,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "universal_html",
+      "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/universal_html-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "universal_io",
+      "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/universal_io-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "url_launcher",
       "rootUri": "file:///Users/ksairos/.pub-cache/hosted/pub.dev/url_launcher-6.1.10",
       "packageUri": "lib/",
@@ -374,7 +422,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-04-22T18:09:32.394594Z",
+  "generated": "2023-04-30T10:17:09.650118Z",
   "generator": "pub",
   "generatorVersion": "2.19.5"
 }

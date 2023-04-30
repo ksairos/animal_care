@@ -16,11 +16,11 @@ class PetBloc extends Bloc<SelectPetEvent, PetState> {
 
   Future<void> _onSelectPet(SelectPetEvent event, Emitter<PetState> emit) async {
     emit(state.copyWith(isLoading: false));
-    final selectPet = Uri.parse("${Server.serverUrl}/pet/getinfo");
+    final uri = Uri.parse("${Server.serverUrl}/pet/getinfo");
     Pet? selectedPet;
     print(event.petId);
     final response = await http.post(
-      selectPet,
+      uri,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'petid': event.petId,
@@ -46,6 +46,5 @@ class PetBloc extends Bloc<SelectPetEvent, PetState> {
     }
     emit(state.copyWith(selectedPet: selectedPet));
     emit(state.copyWith(isLoading: false));
-    print(state.selectedPet?.petName);
   }
 }

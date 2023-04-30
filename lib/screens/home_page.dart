@@ -15,7 +15,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    // Instance of PetBloc. Use this after navigating to Pet's page
     final petBloc = PetBloc();
+    // Managing Providers for this page
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -65,7 +67,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Row(
                               children: [
-                                //TODO: Change the name of the Pet
+                                //TODO: Change the name of the Pet.
+                                //? Which pet's name???
                                 Text("봉쥬르",
                                     style: TextStyle(color: Colors.green)),
                                 const Text(
@@ -78,15 +81,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       const Text("My Pet"),
-                      BlocBuilder<PetBloc, PetState>(
-                        builder: (context, state) {
-                          return Row(
-                            children: [
-                              if (state.isLoading) CircularProgressIndicator(),
-                            ],
-                          );
-                        },
-                      ),
                       Row(
                         children: [
                           Container(
